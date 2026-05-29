@@ -14,8 +14,8 @@ from typing import List, Optional, Dict, Any  # 添加 Any
 from langchain_core.tools import StructuredTool
 from pydantic import BaseModel, Field
 
-from core import EasyCalc
-from tools import get_tools
+from .core import EasyCalc
+from .tools import get_tools
 
 
 # ========== Pydantic Models for Parameter Validation ==========
