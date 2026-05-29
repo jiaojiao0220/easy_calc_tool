@@ -1,0 +1,157 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "easy-calc-tool"
+dynamic = ["version"]
+description = "A flexible calculation toolbox designed for LLM Function Calling"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Easy Calc Tool Team", email = "team@easy-calc-tool.com"}
+]
+maintainers = [
+    {name = "Easy Calc Tool Team", email = "team@easy-calc-tool.com"}
+]
+keywords = ["llm", "function-calling", "calculator", "statistics", "data-analysis", "langchain", "ai", "agent"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pandas>=1.3.0",
+    "numpy>=1.21.0",
+    "numexpr>=2.8.0",
+    "python-dateutil>=2.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-benchmark>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+    "ruff>=0.1.0",
+]
+langchain = [
+    "langchain>=0.1.0",
+    "langchain-core>=0.1.0",
+    "langchain-openai>=0.0.5",
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+    "mkdocstrings[python]>=0.24.0",
+]
+all = [
+    "easy-calc-tool[dev,langchain,docs]",
+]
+
+[project.urls]
+Homepage = "https://github.com/easy-calc-tool/easy-calc-tool"
+Documentation = "https://easy-calc-tool.readthedocs.io"
+Repository = "https://github.com/easy-calc-tool/easy-calc-tool"
+Issues = "https://github.com/easy-calc-tool/easy-calc-tool/issues"
+Changelog = "https://github.com/easy-calc-tool/easy-calc-tool/blob/main/CHANGELOG.md"
+
+[project.scripts]
+easy-calc = "easy_calc_tool.cli:main"
+
+[tool.setuptools_scm]
+write_to = "easy_calc_tool/version.py"
+write_to_template = '''
+"""
+Version information for easy-calc-tool
+"""
+
+__version__ = "{version}"
+__version_info__ = tuple(int(x) for x in "{version}".split(".")[:3])
+'''
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+strict_optional = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM"]
+ignore = ["E501", "B008"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --strict-markers --cov=easy_calc_tool --cov-report=html --cov-report=term-missing --cov-report=xml"
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = ["easy_calc_tool"]
+omit = ["tests/*", "setup.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
