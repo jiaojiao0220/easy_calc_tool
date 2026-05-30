@@ -7,34 +7,36 @@
 
 
 class EasyCalcError(Exception):
-	"""Base exception for all easy-calc-tool errors."""
-	pass
+    """Base exception for all easy-calc-tool errors."""
+
+    pass
 
 
 class CalculationError(EasyCalcError):
-	"""Raised when a calculation fails."""
+    """Raised when a calculation fails."""
 
-	pass
+    pass
 
 
 class DataParseError(EasyCalcError):
-	"""Raised when data parsing fails."""
+    """Raised when data parsing fails."""
 
-	pass
+    pass
 
 
 class InvalidParameterError(EasyCalcError):
-	"""Raised when invalid parameters are provided."""
-	pass
+    """Raised when invalid parameters are provided."""
+
+    pass
 
 
 class ToolNotFoundError(EasyCalcError):
-	"""Raised when a requested tool is not found."""
+    """Raised when a requested tool is not found."""
 
-	pass
+    pass
 
 
 class SecurityError(EasyCalcError):
-	"""Raised when a security violation occurs (e.g., expression injection)."""
+    """Raised when a security violation occurs (e.g., expression injection)."""
 
-	pass
+    pass
