@@ -55,19 +55,20 @@ jobs:
         run: |
           pytest tests/ --cov=easy_calc_tool --cov-report=xml --cov-report=term-missing
 
-      # 新的写法 (v4)
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
-        # ... 其它参数
+        with:
+          file: coverage.xml
+          flags: unittests
+          fail_ci_if_error: false
+          name: codecov-${{ matrix.python-version }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
-        # ... 其它参数
         with:
-          file: ./coverage.xml
-          flags: unittests
-          name: codecov-${{ matrix.python-version }}
-          fail_ci_if_error: false
+          name: coverage-${{ matrix.python-version }}
+          path: coverage.xml
 
   benchmark:
     name: Performance Benchmarks
