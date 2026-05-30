@@ -5,11 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "easy-calc-tool"
 dynamic = ["version"]
+[project]
+name = "easy-calc-tool"
+version = "0.1.4"  # 写死版本号
 description = "A flexible calculation toolbox designed for LLM Function Calling"
 readme = "README.md"
-license = { text = "MIT" }
+license = {text = "MIT"}
 authors = [
-    { name = "Easy Calc Tool Team", email = "team@easy-calc-tool.com" }
+    {name = "Easy Calc Tool Team", email = "team@easy-calc-tool.com"}
 ]
 maintainers = [
     { name = "Easy Calc Tool Team", email = "team@easy-calc-tool.com" }
@@ -74,29 +77,6 @@ Changelog = "https://github.com/easy-calc-tool/easy-calc-tool/blob/main/CHANGELO
 
 [project.scripts]
 easy-calc = "easy_calc_tool.cli:main"
-
-[tool.setuptools_scm]
-write_to = "easy_calc_tool/version.py"
-write_to_template = '''
-"""
-Version information for easy-calc-tool
-"""
-
-import re
-
-__version__ = "{version}"
-
-def _parse_version(ver_str):
-    parts = []
-    for part in ver_str.split(".")[:3]:
-        match = re.search(r'^\d+', part)
-        parts.append(int(match.group()) if match else 0)
-    return tuple(parts)
-
-
-__version_info__ = _parse_version(__version__)
-
-'''
 
 [tool.black]
 line-length = 100
