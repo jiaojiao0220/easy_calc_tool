@@ -132,7 +132,7 @@ class DataHandler:
             else:
                 raise DataParseError(f"Unsupported file type: {path.suffix}")
         except Exception as e:
-            raise DataParseError(f"Failed to read file {path}: {str(e)}")
+            raise DataParseError(f"Failed to read file {path}: {str(e)}") from e
 
     def _parse_structured(self, data: Union[List, Dict]) -> pd.DataFrame:
         """Parse structured data (list of dicts or single dict)."""

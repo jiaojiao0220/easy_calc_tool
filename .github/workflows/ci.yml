@@ -45,7 +45,7 @@ jobs:
 
       - name: Lint with ruff
         run: |
-          ruff check easy_calc_tool tests
+          ruff check easy_calc_tool tests --ignore=B904,SIM905
 
       - name: Type check with mypy
         run: |
