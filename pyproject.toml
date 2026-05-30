@@ -93,7 +93,9 @@ def _parse_version(ver_str):
         parts.append(int(match.group()) if match else 0)
     return tuple(parts)
 
+
 __version_info__ = _parse_version(__version__)
+
 '''
 
 [tool.black]
