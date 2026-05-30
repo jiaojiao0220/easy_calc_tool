@@ -2,21 +2,22 @@ name: Publish to PyPI
 
 on:
   release:
-    types: [ created ]
+    types: [created]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 重要！获取完整 Git 历史，用于 setuptools-scm
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install build dependencies
         run: |
           pip install build twine
 
@@ -25,14 +26,6 @@ jobs:
           python -m build
 
       - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          twine upload dist/*
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          files: dist/*
-          generate_release_notes: true
+          password: ${{ secrets.PYPI_API_TOKEN }}
