@@ -567,12 +567,12 @@ class TestCache:
 
     def test_cache_enabled(self, calc_with_cache, sample_dataframe):
         """Test caching works when enabled."""
-        # result1 = calc_with_cache.calculate(
-        #     "statistics", sample_dataframe, columns="value", operations="sum"
-        # )
-        # result2 = calc_with_cache.calculate(
-        #     "statistics", sample_dataframe, columns="value", operations="sum"
-        # )
+        result1 = calc_with_cache.calculate(
+            "statistics", sample_dataframe, columns="value", operations="sum"
+        )
+        result2 = calc_with_cache.calculate(
+            "statistics", sample_dataframe, columns="value", operations="sum"
+        )
 
         stats = calc_with_cache.get_stats()
         assert stats["cache_size"] >= 1
