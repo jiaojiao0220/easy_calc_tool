@@ -1,28 +1,16 @@
-#!/usr/bin/python3
-# @Author : jiaojiao
-# @Time : 2026/5/29 17:40
-
 """
 Version information for easy-calc-tool
 """
 
-__version__ = "0.1.0"
+import re
 
-# 安全解析版本号
+__version__ = "0.1.1.dev11+g652acf942.d20260530"
+
 def _parse_version(ver_str):
-    try:
-        # 提取数字部分
-        parts = []
-        for part in ver_str.split(".")[:3]:
-            # 只取数字部分
-            import re
-            match = re.search(r'^\d+', part)
-            if match:
-                parts.append(int(match.group()))
-            else:
-                parts.append(0)
-        return tuple(parts)
-    except:
-        return (0, 1, 0)
+    parts = []
+    for part in ver_str.split(".")[:3]:
+        match = re.search(r'^\d+', part)
+        parts.append(int(match.group()) if match else 0)
+    return tuple(parts)
 
 __version_info__ = _parse_version(__version__)
