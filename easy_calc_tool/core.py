@@ -555,8 +555,8 @@ class EasyCalc:
                     pd.to_datetime(df[col])
                     date_col = col
                     break
-                except:
-                    continue
+                except Exception:
+                    pass
             if not date_col:
                 raise InvalidParameterError("No date column found")
 
@@ -721,7 +721,7 @@ class EasyCalc:
 
             try:
                 # 对于线性转换，可以用 1/因子 反向
-                conv = conversions[reverse_key]
+                # conv = conversions[reverse_key]
                 # 简化：直接返回不支持，让用户使用正向
                 return {
                     "success": False,
@@ -729,7 +729,7 @@ class EasyCalc:
                     "from_unit": from_unit,
                     "to_unit": to_unit,
                 }
-            except:
+            except Exception:
                 pass
 
         return {

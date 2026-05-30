@@ -137,46 +137,6 @@ class DataHandler:
         except Exception as e:
             raise DataParseError(f"Failed to read file {path}: {str(e)}")
 
-    def _parse_string(self, data: str) -> pd.DataFrame:
-        """Parse string data (CSV or JSON)."""
-        data = data.strip()
-
-        # 1. 优先尝试 JSON 解析（因为 JSON 字符串可能包含冒号等字符）
-        try:
-            import json
-
-            json_data = json.loads(data)
-            # 成功解析为 JSON，直接返回
-            return self._parse_structured(json_data)
-        except json.JSONDecodeError:
-            pass  # 不是有效的 JSON，继续尝试其他格式
-
-        # 2. 尝试 CSV 解析（必须有换行符和逗号，看起来像 CSV）
-        if "\n" in data and "," in data:
-            try:
-                from io import StringIO
-
-                return pd.read_csv(StringIO(data))
-            except Exception:
-                pass
-
-        # 3. 尝试作为文件路径（包含路径分隔符，且看起来不像数据内容）
-        if (
-            any(c in data for c in "/\\")
-            and "\n" not in data
-            and len(data) < 255
-        ):
-            # 检查是否是常见的数据格式开头（避免误判 JSON）
-            if not data.lstrip().startswith(("[", "{", '{"', "[{")):
-                try:
-                    return self._parse_file(data)
-                except DataParseError:
-                    pass
-
-        raise DataParseError(
-            f"Unable to parse string as CSV, JSON, or file path: {data[:100]}..."
-        )
-
     def _parse_structured(self, data: Union[List, Dict]) -> pd.DataFrame:
         """Parse structured data (list of dicts or single dict)."""
         if isinstance(data, list):
