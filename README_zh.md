@@ -25,7 +25,9 @@ pip install easy-calc-tool
 pip install easy-calc-tool[langchain]
 
 ```
+
 ## 🚀 快速开始
+
 ```PYTHON
 from easy_calc_tool import EasyCalc
 
@@ -45,8 +47,10 @@ data = [
 result = calc.calculate("statistics", data, columns="销售额", operations=["总和", "平均"])
 print(result["statistics"]["销售额"]["总和"])  # 600
 ```
+
 ## 📚 支持的场景
-| 类别 |	功能 |
+
+| 类别 |    功能 |
 | --- | --- |
 | 基础计算 | 四则运算、幂运算、三角函数、对数 |
 | 统计分析 | 均值、方差、标准差、相关性、回归 |

@@ -44,6 +44,7 @@ class NaturalLanguageParser:
 		r'column\s*["\']?(\w+)["\']?',
 		r'字段\s*["\']?(\w+)["\']?',
 	]
+
 	def parse_calculation(self, text: str) -> Dict[str, Any]:
 		"""
 		Parse natural language calculation request.

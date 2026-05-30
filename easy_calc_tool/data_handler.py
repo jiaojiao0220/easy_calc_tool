@@ -71,6 +71,7 @@ class DataHandler:
 			return True
 
 		return False
+
 	def _parse_string(self, data: str) -> pd.DataFrame:
 		"""Parse string data (CSV or JSON)."""
 		data = data.strip()

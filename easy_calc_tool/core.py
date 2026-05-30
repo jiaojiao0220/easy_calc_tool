@@ -288,7 +288,6 @@ class EasyCalc:
 			"error_type": "InvalidParameterError"
 		}
 
-
 	def _statistics(self, df: pd.DataFrame, **kwargs) -> Dict:
 		"""Statistical analysis."""
 		result = {}
@@ -681,6 +680,7 @@ class EasyCalc:
 			"from_unit": from_unit,
 			"to_unit": to_unit
 		}
+
 	def _date_calc(self, df: Optional[pd.DataFrame] = None, **kwargs) -> Dict:
 		"""Date calculations."""
 		result = {}
@@ -835,6 +835,7 @@ class EasyCalc:
 		parts.append(f"Analyzed {len(columns)} column(s)")
 		parts.append(f"Computed {len(operations)} statistic(s)")
 		return " | ".join(parts)
+
 
 if __name__ == "__main__":
 	calc = EasyCalc()

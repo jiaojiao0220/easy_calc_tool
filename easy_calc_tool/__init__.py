@@ -19,41 +19,42 @@ Example:
 
 from .core import EasyCalc
 from .exceptions import (
-    EasyCalcError,
-    CalculationError,
-    DataParseError,
-    InvalidParameterError,
-    ToolNotFoundError,
-    SecurityError,
+	EasyCalcError,
+	CalculationError,
+	DataParseError,
+	InvalidParameterError,
+	ToolNotFoundError,
+	SecurityError,
 )
 from .version import __version__, __version_info__
 
 # LangChain integration (optional)
 try:
-    from .integration_langchain import get_langchain_tools, create_langchain_tools
-    __all__ = [
-        "EasyCalc",
-        "EasyCalcError",
-        "CalculationError",
-        "DataParseError",
-        "InvalidParameterError",
-        "ToolNotFoundError",
-        "SecurityError",
-        "get_langchain_tools",
-        "create_langchain_tools",
-        "__version__",
-        "__version_info__",
-    ]
+	from .integration_langchain import get_langchain_tools, create_langchain_tools
+
+	__all__ = [
+		"EasyCalc",
+		"EasyCalcError",
+		"CalculationError",
+		"DataParseError",
+		"InvalidParameterError",
+		"ToolNotFoundError",
+		"SecurityError",
+		"get_langchain_tools",
+		"create_langchain_tools",
+		"__version__",
+		"__version_info__",
+	]
 except ImportError:
-    # LangChain dependencies not installed
-    __all__ = [
-        "EasyCalc",
-        "EasyCalcError",
-        "CalculationError",
-        "DataParseError",
-        "InvalidParameterError",
-        "ToolNotFoundError",
-        "SecurityError",
-        "__version__",
-        "__version_info__",
-    ]
+	# LangChain dependencies not installed
+	__all__ = [
+		"EasyCalc",
+		"EasyCalcError",
+		"CalculationError",
+		"DataParseError",
+		"InvalidParameterError",
+		"ToolNotFoundError",
+		"SecurityError",
+		"__version__",
+		"__version_info__",
+	]

@@ -104,14 +104,14 @@ def _show_stats():
 
 
 def _manage_cache(action: str):
-    """Manage cache."""
-    calc = EasyCalc()
-    if action == "clear":
-        calc.clear_cache()
-        print("Cache cleared")
-    elif action == "stats":
-        # 使用公共方法而不是直接访问私有属性
-        print(f"Cache size: {calc.get_cache_size()} / {calc.config['cache_max_size']}")
+	"""Manage cache."""
+	calc = EasyCalc()
+	if action == "clear":
+		calc.clear_cache()
+		print("Cache cleared")
+	elif action == "stats":
+		# 使用公共方法而不是直接访问私有属性
+		print(f"Cache size: {calc.get_cache_size()} / {calc.config['cache_max_size']}")
 
 
 if __name__ == "__main__":

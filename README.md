@@ -32,7 +32,9 @@ pip install easy-calc-tool[all]
 ```
 
 ## 🚀 Quick Start
-###Basic Usage
+
+### Basic Usage
+
 ```bash
 from easy_calc_tool import EasyCalc
 
@@ -51,14 +53,18 @@ data = [
 result = calc.calculate("statistics", data, columns="sales", operations=["sum", "mean"])
 print(result["statistics"]["sales"]["sum"])  # 600
 ```
+
 ### Natural Language Interface
+
 ```bash
 # Natural language aggregation
 result = calc.calculate("aggregate", data, 
                        what="group by profit and sum sales")
 print(result["grouped_result"])
 ````
+
 ### 🛠️ LangChain Integration
+
 ```bash
 from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
@@ -72,14 +78,19 @@ response = agent.invoke({
     "messages": [{"role": "user", "content": "计算 12345 * 67890"}]
 })
 ```
+
 ## 📚 Supported Scenarios
+
 1. Basic Calculations
+
 - Arithmetic operations (+, -, *, /, **, %)
 - Trigonometric functions (sin, cos, tan)
 - Logarithmic and exponential functions
 - Percentage calculations
 - Rounding operations
+
 2. Statistical Analysis
+
 - Descriptive statistics (mean, median, mode, std, var)
 
 - Group statistics (GroupBy operations)
@@ -91,6 +102,7 @@ response = agent.invoke({
 - Hypothesis testing
 
 3. Data Processing
+
 - Aggregation (sum, mean, count, min, max)
 
 - Data filtering
@@ -100,6 +112,7 @@ response = agent.invoke({
 - Data transformation (normalization, standardization)
 
 4. Time Series
+
 - Moving averages
 
 - Growth rates (MoM, YoY)
@@ -111,6 +124,7 @@ response = agent.invoke({
 - Date arithmetic
 
 5. Other Features
+
 - Unit conversion (length, weight, temperature, currency)
 
 - Date calculations (age, date differences)
@@ -118,7 +132,9 @@ response = agent.invoke({
 - Financial calculations (loans, IRR, NPV)
 
 - Matrix operations
+
 ## 🔧 Configuration
+
 ```python
 from easy_calc_tool import EasyCalc
 
@@ -131,7 +147,9 @@ calc = EasyCalc(config={
     "safe_mode": True,          # Enable safe evaluation mode
 })
 ```
+
 ## 📖 Documentation
+
 Full documentation is available at https://easy-calc-tool.readthedocs.io
 
 - Installation Guide
@@ -143,9 +161,11 @@ Full documentation is available at https://easy-calc-tool.readthedocs.io
 - Contributing Guide
 
 ## 🤝 Contributing
+
 We welcome contributions! Please see our Contributing Guide for details.
 
 ## Development Setup
+
 ```bash
 # Clone the repository
 git clone https://github.com/easy-calc-tool/easy-calc-tool.git
@@ -165,6 +185,7 @@ make format
 ```
 
 ## 📊 Benchmarks
+
 | Operation | Data Size | Time |
 | ---------- | -------- |------|
 | Basic arithmetic | N/A | < 0.1ms |
@@ -173,6 +194,7 @@ make format
 | Time series (moving average) | 100K rows | ~30ms |
 
 ## 🗺️ Roadmap
+
 - v0.2.0 - More statistical functions (ANOVA, chi-square)
 
 - v0.3.0 - Machine learning predictions
@@ -184,6 +206,7 @@ make format
 - v1.0.0 - Stable release with full documentation
 
 ## 🙏 Acknowledgments
+
 - Built with pandas and numpy
 
 - Inspired by the needs of LLM function calling applications
@@ -191,9 +214,11 @@ make format
 - Thanks to all contributors and users
 
 ## 📄 License
- MIT License - see LICENSE file for details.
 
-##📧 Contact
+MIT License - see LICENSE file for details.
+
+## 📧 Contact
+
 Issues: GitHub Issues
 
 Email: team@easy-calc-tool.com

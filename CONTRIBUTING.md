@@ -3,6 +3,7 @@
 > 🎉 First off, thank you for considering contributing to Easy Calc Tool! 🎉
 
 We welcome all kinds of contributions, including but not limited to:
+
 - Reporting bugs
 - Submitting feature requests
 - Improving documentation
@@ -27,7 +28,10 @@ We welcome all kinds of contributions, including but not limited to:
 
 ### Our Pledge
 
-In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to make
+participation in our project and our community a harassment-free experience for everyone, regardless of age, body size,
+disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education,
+socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
 ### Our Standards
 
@@ -41,7 +45,9 @@ Examples of behavior that contributes to creating a positive environment include
 
 ### Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at [team@easy-calc-tool.com](mailto:team@easy-calc-tool.com). All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team
+at [team@easy-calc-tool.com](mailto:team@easy-calc-tool.com). All complaints will be reviewed and investigated and will
+result in a response that is deemed necessary and appropriate to the circumstances.
 
 ## Getting Started
 
@@ -63,7 +69,8 @@ If you're new to open source or this project, here are some good first issues:
 
 ### 1. Fork the Repository
 
-Click the "Fork" button on the top right of the [GitHub repository page](https://github.com/easy-calc-tool/easy-calc-tool).
+Click the "Fork" button on the top right of
+the [GitHub repository page](https://github.com/easy-calc-tool/easy-calc-tool).
 
 ### 2. Clone Your Fork
 
@@ -71,6 +78,7 @@ Click the "Fork" button on the top right of the [GitHub repository page](https:/
 git clone https://github.com/YOUR_USERNAME/easy-calc-tool.git
 cd easy-calc-tool
 ```
+
 ### 3. Set Up Development Environment
 
 ```bash
@@ -100,7 +108,7 @@ make lint
 
 We use several tools to maintain consistent code style:
 
-| Tool |	Purpose |	Configuration |
+| Tool |    Purpose |    Configuration |
 | ---- | -------- | ------------- |
 | Black | Code formatting | Line length: 100 characters |
 | isort | Import sorting | Compatible with Black |
@@ -109,6 +117,7 @@ We use several tools to maintain consistent code style:
 | ruff | Fast linting | Combined functionality |
 
 ## Formatting Code
+
 ```bash
 # Format all code
 make format
@@ -119,6 +128,7 @@ isort easy_calc_tool tests
 ```
 
 ## Linting Code
+
 ```bash
 # Run all checks
 make lint
@@ -130,6 +140,7 @@ ruff check easy_calc_tool tests
 ```
 
 ## Type Hints
+
 All new code should include proper type hints:
 
 ```python
@@ -141,17 +152,19 @@ def calculate_mean(values: List[float]) -> Optional[float]:
         return None
     return sum(values) / len(values)
 ```
-    
+
 ## Naming Conventions
-| Element | Convention |	Example |
+
+| Element | Convention |    Example |
 | ------- | --------- | -------- |
-| Classes |	PascalCase |	EasyCalc |
+| Classes |    PascalCase |    EasyCalc |
 | Functions/Methods | snake_case | calculate_statistics |
 | Variables | snake_case | result_data |
 | Constants | UPPER_SNAKE_CASE | MAX_DATA_SIZE |
 | Private Members | Leading underscore | _internal_method |
 
 ## Docstrings
+
 Use Google-style docstrings:
 
 ```python
@@ -181,7 +194,9 @@ def calculate_statistics(
         2.0
     """
 ```
+
 ## Testing
+
 - Test Requirements
 - Every new feature must include tests
 
@@ -192,6 +207,7 @@ def calculate_statistics(
 - Critical paths should have >95% coverage
 
 ## Test Structure
+
 ```
 tests/
 ├── __init__.py
@@ -204,7 +220,9 @@ tests/
     ├── sample_data.csv
     └── sample_data.json
 ```
+
 ## Writing Tests
+
 ```python
 import pytest
 from easy_calc_tool import EasyCalc
@@ -251,6 +269,7 @@ class TestStatistics:
 ```
 
 ## Running Tests
+
 ```# Run all tests
 make test
 
@@ -277,6 +296,7 @@ pytest tests/ -n auto
 ```
 
 ## Test Coverage Expectations
+
 ```bash
 # Check coverage
 pytest tests/ --cov=easy_calc_tool --cov-report=term
@@ -294,6 +314,7 @@ pytest tests/ --cov=easy_calc_tool --cov-report=term
 ```
 
 ## Documentation
+
 ### Building Documentation
 
 ```bash
@@ -305,7 +326,9 @@ make docs-serve
 
 # View at http://127.0.0.1:8000
 ```
+
 ### Documentation Structure
+
 ```text
 docs/
 ├── index.md              # Home page
@@ -317,6 +340,7 @@ docs/
 ```
 
 ## Docstring Guidelines
+
 - Public APIs: Always include docstrings
 
 - Private methods: Optional but encouraged for complex logic
@@ -326,7 +350,9 @@ docs/
 - Keep docstrings up to date with code changes
 
 ## Pull Request Process
+
 ### Branch Naming
+
 #### Use descriptive branch names:
 
 ```bash
@@ -347,6 +373,7 @@ git checkout -b test/add-coverage-for-timeseries
 ```
 
 ### Commit Message Guidelines
+
 #### Follow Conventional Commits:
 
 ```text
@@ -356,6 +383,7 @@ git checkout -b test/add-coverage-for-timeseries
 
 <footer>
 ```
+
 #### Types:
 
 - feat: New feature
@@ -389,6 +417,7 @@ perf(data_handler): optimize large dataframe parsing
 ```
 
 ### Pre-commit Checklist
+
 #### Before committing, ensure:
 
 ```bash
@@ -406,10 +435,13 @@ make test-coverage
 ```
 
 ### Creating a Pull Request
+
 1. Push your changes:
+
 ```bash
 git push origin feature/your-feature-name
 ```
+
 2. Open a Pull Request on GitHub
 
 3. Fill out the PR template (automatically loaded)
@@ -425,6 +457,7 @@ git push origin feature/your-feature-name
 8. Merge (maintainers will handle this)
 
 ### PR Template
+
 ```markdown
 ## Pull Request Checklist
 
@@ -469,10 +502,13 @@ Closes #456
 
 <!-- Add any other context about the pull request here -->
 ```
+
 ### Reporting Bugs
+
 We use GitHub Issues to track public bugs. Report a bug by opening a new issue.
 
 ### Bug Report Template
+
 ```markdown
 **Describe the Bug**
 A clear and concise description of what the bug is.
@@ -497,6 +533,7 @@ calc = EasyCalc()
 data = [...]
 result = calc.calculate(...)  # This fails
 ```
+
 #### Environment
 
 - Python version: [e.g., 3.11.0]
@@ -508,9 +545,11 @@ result = calc.calculate(...)  # This fails
 - Installation method: [e.g., pip, from source]
 
 #### Additional Context
+
 Add any other context about the problem here.
 
 #### Possible Solution
+
 If you have ideas on how to fix the issue, please share them.
 
 ```text
@@ -574,8 +613,11 @@ We follow [Semantic Versioning](https://semver.org/):
 
 5. **CI will automatically publish to PyPI**
 ```
+
 ## Getting Help
+
 ### Where to Ask Questions
+
 - GitHub Discussions: For questions and general discussion
 
 - Issues: For bug reports and feature requests
@@ -583,6 +625,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - Discord: For real-time chat (link coming soon)
 
 ### What to Include When Asking for Help
+
 - What you're trying to achieve
 
 - What you've tried
@@ -592,6 +635,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - Your environment details
 
 ### Recognition
+
 Contributors will be recognized in:
 
 - README.md contributors section
@@ -601,10 +645,13 @@ Contributors will be recognized in:
 - GitHub profile on the contributors page
 
 ### License
+
 By contributing, you agree that your contributions will be licensed under the same MIT License that covers the project.
 
 ### Quick Reference Card
+
 #### Common Commands
+
 ```bash
 # Setup
 make install-dev          # Install development dependencies
@@ -631,13 +678,15 @@ make clean                # Clean build artifacts
 ```
 
 #### File Locations
+
 | File            | Purpose                          |
 |-----------------|----------------------------------|
 | easy_calc_tool/ | Main package code                |
 | tests/          | Test files                       |
 | docs/           | Documentation                    |
 | examples/       | Example scripts                  |
-| .github/        | 	GitHub templates and workflows  |
+| .github/        |    GitHub templates and workflows  |
+
 #### Thank you for contributing! 🚀
 
 Every contribution, no matter how small, is valuable. Together we're building something great.
