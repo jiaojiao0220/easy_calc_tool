@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:22
 
@@ -19,18 +18,21 @@ Example:
 
 from .core import EasyCalc
 from .exceptions import (
-    EasyCalcError,
     CalculationError,
     DataParseError,
+    EasyCalcError,
     InvalidParameterError,
-    ToolNotFoundError,
     SecurityError,
+    ToolNotFoundError,
 )
 from .version import __version__, __version_info__
 
 # LangChain integration (optional)
 try:
-    from .integration_langchain import get_langchain_tools, create_langchain_tools
+    from .integration_langchain import (
+        create_langchain_tools,
+        get_langchain_tools,
+    )
 
     __all__ = [
         "EasyCalc",

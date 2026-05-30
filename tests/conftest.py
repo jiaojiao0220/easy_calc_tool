@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:45
 
@@ -21,20 +20,27 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from easy_calc_tool import EasyCalc
 
-
 # ========== Basic Fixtures ==========
 
 
 @pytest.fixture
 def calc():
     """Create EasyCalc instance for testing."""
-    return EasyCalc(config={"cache_enabled": False, "log_level": "ERROR", "precision": 2})
+    return EasyCalc(
+        config={"cache_enabled": False, "log_level": "ERROR", "precision": 2}
+    )
 
 
 @pytest.fixture
 def calc_with_cache():
     """Create EasyCalc instance with cache enabled."""
-    return EasyCalc(config={"cache_enabled": True, "cache_max_size": 10, "log_level": "ERROR"})
+    return EasyCalc(
+        config={
+            "cache_enabled": True,
+            "cache_max_size": 10,
+            "log_level": "ERROR",
+        }
+    )
 
 
 # ========== Data Fixtures ==========
@@ -104,7 +110,11 @@ def correlation_dataframe():
     np.random.seed(42)
     x = np.random.randn(50) * 10 + 50
     return pd.DataFrame(
-        {"x": x, "y": x * 0.8 + np.random.randn(50) * 5, "z": np.random.randn(50) * 10 + 100}
+        {
+            "x": x,
+            "y": x * 0.8 + np.random.randn(50) * 5,
+            "z": np.random.randn(50) * 10 + 100,
+        }
     )
 
 
@@ -114,7 +124,9 @@ def correlation_dataframe():
 @pytest.fixture
 def temp_csv_file():
     """Create temporary CSV file for testing."""
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".csv", delete=False
+    ) as f:
         f.write("name,value\nA,10\nB,20\nC,30")
         temp_path = f.name
 
@@ -126,7 +138,9 @@ def temp_csv_file():
 def temp_json_file():
     """Create temporary JSON file for testing."""
     data = [{"name": "A", "value": 10}, {"name": "B", "value": 20}]
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".json", delete=False
+    ) as f:
         json.dump(data, f)
         temp_path = f.name
 

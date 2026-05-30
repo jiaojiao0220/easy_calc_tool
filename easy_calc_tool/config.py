@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:40
 
@@ -8,8 +7,8 @@ Configuration management for easy-calc-tool.
 """
 
 import os
-from typing import Dict, Any
 from dataclasses import dataclass, field
+from typing import Any, Dict
 
 
 @dataclass
@@ -77,12 +76,20 @@ class Config:
         config = cls()
 
         # Override with environment variables
-        config.cache_enabled = os.getenv("EASY_CALC_CACHE_ENABLED", "true").lower() == "true"
-        config.cache_max_size = int(os.getenv("EASY_CALC_CACHE_MAX_SIZE", "1000"))
+        config.cache_enabled = (
+            os.getenv("EASY_CALC_CACHE_ENABLED", "true").lower() == "true"
+        )
+        config.cache_max_size = int(
+            os.getenv("EASY_CALC_CACHE_MAX_SIZE", "1000")
+        )
         config.timeout = int(os.getenv("EASY_CALC_TIMEOUT", "30"))
-        config.max_data_size = int(os.getenv("EASY_CALC_MAX_DATA_SIZE", "10000000"))
+        config.max_data_size = int(
+            os.getenv("EASY_CALC_MAX_DATA_SIZE", "10000000")
+        )
         config.precision = int(os.getenv("EASY_CALC_PRECISION", "6"))
-        config.safe_mode = os.getenv("EASY_CALC_SAFE_MODE", "true").lower() == "true"
+        config.safe_mode = (
+            os.getenv("EASY_CALC_SAFE_MODE", "true").lower() == "true"
+        )
         config.log_level = os.getenv("EASY_CALC_LOG_LEVEL", "INFO")
 
         return config

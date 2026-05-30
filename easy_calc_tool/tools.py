@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:21
 
@@ -8,7 +7,7 @@ Function Call tool definitions for LLM integration.
 Provides OpenAI-compatible tool schemas for all calculation tools.
 """
 
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 # Complete tool schemas for OpenAI/Anthropic function calling
 TOOLS_SCHEMA: List[Dict[str, Any]] = [
@@ -24,8 +23,14 @@ TOOLS_SCHEMA: List[Dict[str, Any]] = [
                         "type": "string",
                         "description": "数学表达式，例如 '100 * 2 + 5'、'sqrt(16)'、'sin(30)'",
                     },
-                    "a": {"type": "number", "description": "二元运算的第一个操作数"},
-                    "b": {"type": "number", "description": "二元运算的第二个操作数"},
+                    "a": {
+                        "type": "number",
+                        "description": "二元运算的第一个操作数",
+                    },
+                    "b": {
+                        "type": "number",
+                        "description": "二元运算的第二个操作数",
+                    },
                     "operation": {
                         "type": "string",
                         "enum": ["+", "-", "*", "/", "**", "%"],
@@ -186,11 +191,23 @@ TOOLS_SCHEMA: List[Dict[str, Any]] = [
                         "type": "string",
                         "description": "时间序列数据，支持CSV格式字符串或JSON数组字符串",
                     },
-                    "date_col": {"type": "string", "description": "日期列名，如不提供将自动检测"},
-                    "value_col": {"type": "string", "description": "数值列名，如不提供将自动检测"},
+                    "date_col": {
+                        "type": "string",
+                        "description": "日期列名，如不提供将自动检测",
+                    },
+                    "value_col": {
+                        "type": "string",
+                        "description": "数值列名，如不提供将自动检测",
+                    },
                     "operation": {
                         "type": "string",
-                        "enum": ["moving_average", "growth_rate", "cumulative", "yoy", "mom"],
+                        "enum": [
+                            "moving_average",
+                            "growth_rate",
+                            "cumulative",
+                            "yoy",
+                            "mom",
+                        ],
                         "description": "操作类型: moving_average(移动平均), growth_rate(增长率), cumulative(累计和), yoy(同比增长), mom(环比增长)",
                     },
                     "window": {
@@ -237,15 +254,30 @@ TOOLS_SCHEMA: List[Dict[str, Any]] = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "start": {"type": "string", "description": "开始日期，格式: YYYY-MM-DD"},
-                    "end": {"type": "string", "description": "结束日期，格式: YYYY-MM-DD"},
-                    "date": {"type": "string", "description": "基准日期，格式: YYYY-MM-DD"},
-                    "days": {"type": "integer", "description": "要增加或减少的天数"},
+                    "start": {
+                        "type": "string",
+                        "description": "开始日期，格式: YYYY-MM-DD",
+                    },
+                    "end": {
+                        "type": "string",
+                        "description": "结束日期，格式: YYYY-MM-DD",
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": "基准日期，格式: YYYY-MM-DD",
+                    },
+                    "days": {
+                        "type": "integer",
+                        "description": "要增加或减少的天数",
+                    },
                     "birth_date": {
                         "type": "string",
                         "description": "出生日期，用于计算年龄，格式: YYYY-MM-DD",
                     },
-                    "date_for_dow": {"type": "string", "description": "要查询星期几的日期"},
+                    "date_for_dow": {
+                        "type": "string",
+                        "description": "要查询星期几的日期",
+                    },
                     "reference_date": {
                         "type": "string",
                         "description": "参考日期，用于年龄计算（默认为今天）",
@@ -346,14 +378,21 @@ TOOLS_SCHEMA: List[Dict[str, Any]] = [
                         "description": "透视表的列字段",
                         "default": None,
                     },
-                    "values": {"type": "string", "description": "要聚合的值字段"},
+                    "values": {
+                        "type": "string",
+                        "description": "要聚合的值字段",
+                    },
                     "aggfunc": {
                         "type": "string",
                         "enum": ["sum", "mean", "count", "min", "max"],
                         "description": "聚合函数",
                         "default": "mean",
                     },
-                    "fill_value": {"type": "number", "description": "填充空值的数值", "default": 0},
+                    "fill_value": {
+                        "type": "number",
+                        "description": "填充空值的数值",
+                        "default": 0,
+                    },
                 },
                 "required": ["data", "index", "values"],
                 "additionalProperties": False,

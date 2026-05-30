@@ -1,19 +1,18 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:43
 
 """
 Tests for DataHandler.
 """
-import sys
 import os
+import sys
 
 # 将项目根目录添加到 Python 路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import pytest
 import pandas as pd
-import numpy as np
+import pytest
+
 from easy_calc_tool.data_handler import DataHandler
 from easy_calc_tool.exceptions import DataParseError
 

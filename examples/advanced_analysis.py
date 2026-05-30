@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:47
 """
@@ -12,8 +11,9 @@ import sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from easy_calc_tool import EasyCalc
 import pandas as pd
+
+from easy_calc_tool import EasyCalc
 
 
 def correlation_analysis():
@@ -54,7 +54,12 @@ def pivot_table_analysis():
 
     # Pivot by product and region
     result = calc.calculate(
-        "pivot", data, index="product", columns="region", values="sales", aggfunc="sum"
+        "pivot",
+        data,
+        index="product",
+        columns="region",
+        values="sales",
+        aggfunc="sum",
     )
     print("\nPivot Table (Product × Region):")
     print(result["pivot_table"])
@@ -70,7 +75,9 @@ def comprehensive_data_analysis():
             "date": pd.date_range("2024-01-01", periods=100, freq="D"),
             "sales": np.random.normal(1000, 100, 100),
             "customers": np.random.poisson(50, 100),
-            "region": np.random.choice(["North", "South", "East", "West"], 100),
+            "region": np.random.choice(
+                ["North", "South", "East", "West"], 100
+            ),
             "product": np.random.choice(["A", "B", "C"], 100),
         }
     )
@@ -81,7 +88,10 @@ def comprehensive_data_analysis():
     # 1. Overall statistics
     print("\n1. Overall Statistics:")
     result = calc.calculate(
-        "statistics", data, columns=["sales", "customers"], operations=["mean", "std", "min", "max"]
+        "statistics",
+        data,
+        columns=["sales", "customers"],
+        operations=["mean", "std", "min", "max"],
     )
     for col, stats in result["statistics"].items():
         print(f"   {col}: {stats}")
@@ -89,7 +99,11 @@ def comprehensive_data_analysis():
     # 2. Group by analysis
     print("\n2. Sales by Region:")
     result = calc.calculate(
-        "statistics", data, columns="sales", operations=["sum", "mean"], group_by="region"
+        "statistics",
+        data,
+        columns="sales",
+        operations=["sum", "mean"],
+        group_by="region",
     )
     for region, stats in result["grouped"].items():
         print(f"   {region}: {stats}")
@@ -97,20 +111,33 @@ def comprehensive_data_analysis():
     # 3. Time series analysis
     print("\n3. Time Series Trends:")
     result = calc.calculate(
-        "timeseries", data, date_col="date", value_col="sales", operation="moving_average", window=7
+        "timeseries",
+        data,
+        date_col="date",
+        value_col="sales",
+        operation="moving_average",
+        window=7,
     )
-    print(f"   Calculated 7-day moving average for {len(result['result'])} days")
+    print(
+        f"   Calculated 7-day moving average for {len(result['result'])} days"
+    )
 
     # 4. Filtered analysis
     print("\n4. High Sales Analysis (>1200):")
-    result = calc.calculate("filter_calc", data, condition="sales > 1200", calculate="sales总和")
+    result = calc.calculate(
+        "filter_calc", data, condition="sales > 1200", calculate="sales总和"
+    )
     print(f"   High sales days: {result['filtered_count']}")
     if "statistics" in result:
-        print(f"   Total high sales: {result['statistics']['sales']['sum']:.0f}")
+        print(
+            f"   Total high sales: {result['statistics']['sales']['sum']:.0f}"
+        )
 
     # 5. Correlation
     print("\n5. Sales vs Customers Correlation:")
-    result = calc.calculate("correlation", data, columns=["sales", "customers"])
+    result = calc.calculate(
+        "correlation", data, columns=["sales", "customers"]
+    )
     corr = result["correlation_matrix"]["sales"]["customers"]
     print(f"   Correlation coefficient: {corr:.3f}")
 
@@ -125,13 +152,15 @@ def export_results():
         {"product": "C", "sales": 300, "profit": 60},
     ]
 
-    result = calc.calculate("statistics", data, columns="sales", operations=["sum", "mean"])
+    result = calc.calculate(
+        "statistics", data, columns="sales", operations=["sum", "mean"]
+    )
 
     # Access individual values
     total_sales = result["statistics"]["sales"]["sum"]
     avg_sales = result["statistics"]["sales"]["mean"]
 
-    print(f"\nSales Analysis Results:")
+    print("\nSales Analysis Results:")
     print(f"  Total Sales: {total_sales}")
     print(f"  Average Sales: {avg_sales}")
 

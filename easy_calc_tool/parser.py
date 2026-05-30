@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:39
 
@@ -8,7 +7,7 @@ Natural language parser for flexible parameter handling.
 """
 
 import re
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Any, Dict, List, Optional
 
 
 class NaturalLanguageParser:
@@ -168,7 +167,10 @@ class NaturalLanguageParser:
 
         for pattern in dangerous_patterns:
             if re.search(pattern, expression.lower()):
-                return {"safe": False, "reason": f"Dangerous pattern: {pattern}"}
+                return {
+                    "safe": False,
+                    "reason": f"Dangerous pattern: {pattern}",
+                }
 
         # Extract all identifiers
         identifiers = re.findall(r"\b[a-zA-Z_][a-zA-Z0-9_]*\b", expression)

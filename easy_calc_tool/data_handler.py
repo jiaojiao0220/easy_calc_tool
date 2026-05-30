@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:39
 
@@ -7,12 +6,10 @@
 Data handling utilities for parsing various input formats.
 """
 
-import json
-import pandas as pd
-import numpy as np
-from typing import Any, Union, Optional, Dict, List
-from io import StringIO
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
+
+import pandas as pd
 
 from .exceptions import DataParseError
 
@@ -95,13 +92,19 @@ class DataHandler:
                 pass
 
         # 3. 最后尝试作为文件路径
-        if len(data) < 255 and any(c in data for c in "/\\:") and "\n" not in data:
+        if (
+            len(data) < 255
+            and any(c in data for c in "/\\:")
+            and "\n" not in data
+        ):
             try:
                 return self._parse_file(data)
             except DataParseError:
                 pass  # 如果文件不存在，继续抛出最终错误
 
-        raise DataParseError(f"Unable to parse string as CSV, JSON, or file path: {data[:100]}...")
+        raise DataParseError(
+            f"Unable to parse string as CSV, JSON, or file path: {data[:100]}..."
+        )
 
     def _validate_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
         """Validate and optionally truncate large dataframes."""
@@ -120,7 +123,9 @@ class DataHandler:
 
         try:
             if path.suffix.lower() == ".csv":
-                return pd.read_csv(path, encoding=self.config.get("encoding", "utf-8"))
+                return pd.read_csv(
+                    path, encoding=self.config.get("encoding", "utf-8")
+                )
             elif path.suffix.lower() in [".xlsx", ".xls"]:
                 return pd.read_excel(path)
             elif path.suffix.lower() == ".json":
@@ -156,7 +161,11 @@ class DataHandler:
                 pass
 
         # 3. 尝试作为文件路径（包含路径分隔符，且看起来不像数据内容）
-        if any(c in data for c in "/\\") and "\n" not in data and len(data) < 255:
+        if (
+            any(c in data for c in "/\\")
+            and "\n" not in data
+            and len(data) < 255
+        ):
             # 检查是否是常见的数据格式开头（避免误判 JSON）
             if not data.lstrip().startswith(("[", "{", '{"', "[{")):
                 try:
@@ -164,7 +173,9 @@ class DataHandler:
                 except DataParseError:
                     pass
 
-        raise DataParseError(f"Unable to parse string as CSV, JSON, or file path: {data[:100]}...")
+        raise DataParseError(
+            f"Unable to parse string as CSV, JSON, or file path: {data[:100]}..."
+        )
 
     def _parse_structured(self, data: Union[List, Dict]) -> pd.DataFrame:
         """Parse structured data (list of dicts or single dict)."""

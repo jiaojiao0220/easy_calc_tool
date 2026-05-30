@@ -1,21 +1,19 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:41
 
 """
 Tests for core EasyCalc functionality.
 """
-import sys
 import os
+import sys
 
 # 将项目根目录添加到 Python 路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pytest
-import pandas as pd
-import numpy as np
+
 from easy_calc_tool import EasyCalc
-from easy_calc_tool.exceptions import ToolNotFoundError, InvalidParameterError
+from easy_calc_tool.exceptions import ToolNotFoundError
 
 
 class TestEasyCalcInitialization:
@@ -138,20 +136,28 @@ class TestStatistics:
 
     def test_statistics_single_column_sum(self, calc, sample_dataframe):
         """Test sum on single column."""
-        result = calc.calculate("statistics", sample_dataframe, columns="value", operations=["sum"])
+        result = calc.calculate(
+            "statistics", sample_dataframe, columns="value", operations=["sum"]
+        )
         assert result["statistics"]["value"]["sum"] == 360
 
     def test_statistics_single_column_mean(self, calc, sample_dataframe):
         """Test mean on single column."""
         result = calc.calculate(
-            "statistics", sample_dataframe, columns="value", operations=["mean"]
+            "statistics",
+            sample_dataframe,
+            columns="value",
+            operations=["mean"],
         )
         assert result["statistics"]["value"]["mean"] == 45.0
 
     def test_statistics_multiple_columns(self, calc, sample_dataframe):
         """Test statistics on multiple columns."""
         result = calc.calculate(
-            "statistics", sample_dataframe, columns=["value", "score"], operations=["sum", "mean"]
+            "statistics",
+            sample_dataframe,
+            columns=["value", "score"],
+            operations=["sum", "mean"],
         )
         assert "value" in result["statistics"]
         assert "score" in result["statistics"]
@@ -159,26 +165,36 @@ class TestStatistics:
 
     def test_statistics_all_columns(self, calc, sample_dataframe):
         """Test statistics on all numeric columns."""
-        result = calc.calculate("statistics", sample_dataframe, columns="all", operations=["sum"])
+        result = calc.calculate(
+            "statistics", sample_dataframe, columns="all", operations=["sum"]
+        )
         assert "value" in result["statistics"]
         assert "score" in result["statistics"]
 
     def test_statistics_with_count(self, calc, sample_dataframe):
         """Test count operation."""
         result = calc.calculate(
-            "statistics", sample_dataframe, columns="value", operations=["count"]
+            "statistics",
+            sample_dataframe,
+            columns="value",
+            operations=["count"],
         )
         assert result["statistics"]["value"]["count"] == 8
 
     def test_statistics_with_std(self, calc, sample_dataframe):
         """Test standard deviation."""
-        result = calc.calculate("statistics", sample_dataframe, columns="value", operations=["std"])
+        result = calc.calculate(
+            "statistics", sample_dataframe, columns="value", operations=["std"]
+        )
         assert "std" in result["statistics"]["value"]
 
     def test_statistics_with_min_max(self, calc, sample_dataframe):
         """Test min and max operations."""
         result = calc.calculate(
-            "statistics", sample_dataframe, columns="value", operations=["min", "max"]
+            "statistics",
+            sample_dataframe,
+            columns="value",
+            operations=["min", "max"],
         )
         assert result["statistics"]["value"]["min"] == 10
         assert result["statistics"]["value"]["max"] == 80
@@ -186,14 +202,21 @@ class TestStatistics:
     def test_statistics_with_median(self, calc, sample_dataframe):
         """Test median operation."""
         result = calc.calculate(
-            "statistics", sample_dataframe, columns="value", operations=["median"]
+            "statistics",
+            sample_dataframe,
+            columns="value",
+            operations=["median"],
         )
         assert result["statistics"]["value"]["median"] == 45.0
 
     def test_statistics_grouped(self, calc, sample_dataframe):
         """Test grouped statistics."""
         result = calc.calculate(
-            "statistics", sample_dataframe, columns="value", operations=["sum"], group_by="name"
+            "statistics",
+            sample_dataframe,
+            columns="value",
+            operations=["sum"],
+            group_by="name",
         )
         assert "grouped" in result
         # 使用实际的 key 格式（单元素元组被转换成了字符串）
@@ -220,7 +243,9 @@ class TestStatistics:
             assert result["grouped"]["X"]["value"]["mean"] == 33.33
         elif "statistics" in result:
             # 整体统计（说明 group_by 没生效）
-            pytest.fail("group_by parameter did not work, returned overall statistics instead")
+            pytest.fail(
+                "group_by parameter did not work, returned overall statistics instead"
+            )
 
     def test_statistics_no_numeric_columns(self, calc):
         """Test with no numeric columns."""
@@ -228,10 +253,15 @@ class TestStatistics:
         result = calc.calculate("statistics", data)
         assert result.get("success") is False
 
-    def test_statistics_natural_language_operations(self, calc, sample_dataframe):
+    def test_statistics_natural_language_operations(
+        self, calc, sample_dataframe
+    ):
         """Test statistics with natural language operations."""
         result = calc.calculate(
-            "statistics", sample_dataframe, columns="value", operations="总和和平均"
+            "statistics",
+            sample_dataframe,
+            columns="value",
+            operations="总和和平均",
         )
         stats = result["statistics"]["value"]
         assert "sum" in stats
@@ -244,28 +274,40 @@ class TestAggregate:
     def test_aggregate_basic_sum(self, calc, sample_data_list):
         """Test basic sum aggregation."""
         result = calc.calculate(
-            "aggregate", sample_data_list, columns=["sales"], operations=["sum"]
+            "aggregate",
+            sample_data_list,
+            columns=["sales"],
+            operations=["sum"],
         )
         assert result["result"]["sales"] == 1000
 
     def test_aggregate_with_groupby(self, calc, sample_data_list):
         """Test aggregation with group by."""
         result = calc.calculate(
-            "aggregate", sample_data_list, columns=["sales"], operations=["sum"], group_by="product"
+            "aggregate",
+            sample_data_list,
+            columns=["sales"],
+            operations=["sum"],
+            group_by="product",
         )
         assert len(result["grouped_result"]) == 3
 
     def test_aggregate_multiple_operations(self, calc, sample_data_list):
         """Test aggregation with multiple operations."""
         result = calc.calculate(
-            "aggregate", sample_data_list, columns=["sales"], operations=["sum", "mean"]
+            "aggregate",
+            sample_data_list,
+            columns=["sales"],
+            operations=["sum", "mean"],
         )
         assert "sales_sum" in result["result"]
         assert "sales_mean" in result["result"]
 
     def test_aggregate_natural_language(self, calc, sample_data_list):
         """Test aggregation with natural language."""
-        result = calc.calculate("aggregate", sample_data_list, what="按product分组求和sales")
+        result = calc.calculate(
+            "aggregate", sample_data_list, what="按product分组求和sales"
+        )
         assert "grouped_result" in result
         assert result["group_by"] == ["product"]
 
@@ -275,25 +317,34 @@ class TestFilterCalc:
 
     def test_filter_basic(self, calc, sample_data_list):
         """Test basic filter."""
-        result = calc.calculate("filter_calc", sample_data_list, condition="sales > 200")
+        result = calc.calculate(
+            "filter_calc", sample_data_list, condition="sales > 200"
+        )
         assert result["filtered_count"] == 2
 
     def test_filter_with_calculation(self, calc, sample_data_list):
         """Test filter with calculation."""
         result = calc.calculate(
-            "filter_calc", sample_data_list, condition="sales > 200", calculate="sales总和"
+            "filter_calc",
+            sample_data_list,
+            condition="sales > 200",
+            calculate="sales总和",
         )
         assert "statistics" in result
         assert result["statistics"]["sales"]["sum"] == 550
 
     def test_filter_no_matches(self, calc, sample_data_list):
         """Test filter with no matches."""
-        result = calc.calculate("filter_calc", sample_data_list, condition="sales > 1000")
+        result = calc.calculate(
+            "filter_calc", sample_data_list, condition="sales > 1000"
+        )
         assert result["filtered_count"] == 0
 
     def test_filter_invalid_condition(self, calc, sample_data_list):
         """Test invalid filter condition."""
-        result = calc.calculate("filter_calc", sample_data_list, condition="invalid_column > 10")
+        result = calc.calculate(
+            "filter_calc", sample_data_list, condition="invalid_column > 10"
+        )
         assert result.get("success") is False
 
 
@@ -303,7 +354,10 @@ class TestTimeseries:
     def test_timeseries_moving_average(self, calc, timeseries_dataframe):
         """Test moving average calculation."""
         result = calc.calculate(
-            "timeseries", timeseries_dataframe, operation="moving_average", window=5
+            "timeseries",
+            timeseries_dataframe,
+            operation="moving_average",
+            window=5,
         )
         assert result["operation"] == "moving_average"
         assert result["window"] == 5
@@ -311,23 +365,31 @@ class TestTimeseries:
 
     def test_timeseries_growth_rate(self, calc, timeseries_dataframe):
         """Test growth rate calculation."""
-        result = calc.calculate("timeseries", timeseries_dataframe, operation="growth_rate")
+        result = calc.calculate(
+            "timeseries", timeseries_dataframe, operation="growth_rate"
+        )
         assert "average_growth" in result
 
     def test_timeseries_cumulative(self, calc, timeseries_dataframe):
         """Test cumulative sum calculation."""
-        result = calc.calculate("timeseries", timeseries_dataframe, operation="cumulative")
+        result = calc.calculate(
+            "timeseries", timeseries_dataframe, operation="cumulative"
+        )
         assert "total" in result
 
     def test_timeseries_auto_detect_columns(self, calc, timeseries_dataframe):
         """Test auto detection of date and value columns."""
-        result = calc.calculate("timeseries", timeseries_dataframe, operation="cumulative")
+        result = calc.calculate(
+            "timeseries", timeseries_dataframe, operation="cumulative"
+        )
         assert result["date_col"] is not None
         assert result["value_col"] is not None
 
     def test_timeseries_invalid_operation(self, calc, timeseries_dataframe):
         """Test invalid operation."""
-        result = calc.calculate("timeseries", timeseries_dataframe, operation="invalid_op")
+        result = calc.calculate(
+            "timeseries", timeseries_dataframe, operation="invalid_op"
+        )
         assert result.get("success") is False
 
 
@@ -336,37 +398,51 @@ class TestUnitConvert:
 
     def test_convert_km_to_mile(self, calc):
         """Test km to mile conversion."""
-        result = calc.calculate("unit_convert", None, value=10, from_unit="km", to_unit="mile")
+        result = calc.calculate(
+            "unit_convert", None, value=10, from_unit="km", to_unit="mile"
+        )
         assert round(result["result"], 2) == 6.21
 
     def test_convert_kg_to_lb(self, calc):
         """Test kg to lb conversion."""
-        result = calc.calculate("unit_convert", None, value=100, from_unit="kg", to_unit="lb")
+        result = calc.calculate(
+            "unit_convert", None, value=100, from_unit="kg", to_unit="lb"
+        )
         assert round(result["result"], 2) == 220.46
 
     def test_convert_celsius_to_fahrenheit(self, calc):
         """Test Celsius to Fahrenheit conversion."""
-        result = calc.calculate("unit_convert", None, value=100, from_unit="c", to_unit="f")
+        result = calc.calculate(
+            "unit_convert", None, value=100, from_unit="c", to_unit="f"
+        )
         assert result["result"] == 212.0
 
     def test_convert_celsius_to_kelvin(self, calc):
         """Test Celsius to Kelvin conversion."""
-        result = calc.calculate("unit_convert", None, value=0, from_unit="c", to_unit="k")
+        result = calc.calculate(
+            "unit_convert", None, value=0, from_unit="c", to_unit="k"
+        )
         assert result["result"] == 273.15
 
     def test_convert_meter_to_feet(self, calc):
         """Test meter to feet conversion."""
-        result = calc.calculate("unit_convert", None, value=5, from_unit="m", to_unit="ft")
+        result = calc.calculate(
+            "unit_convert", None, value=5, from_unit="m", to_unit="ft"
+        )
         assert round(result["result"], 2) == 16.40
 
     def test_convert_invalid_units(self, calc):
         """Test invalid unit conversion."""
-        result = calc.calculate("unit_convert", None, value=10, from_unit="invalid", to_unit="mile")
+        result = calc.calculate(
+            "unit_convert", None, value=10, from_unit="invalid", to_unit="mile"
+        )
         assert result.get("success") is False
 
     def test_convert_missing_value(self, calc):
         """Test missing value parameter."""
-        result = calc.calculate("unit_convert", None, from_unit="km", to_unit="mile")
+        result = calc.calculate(
+            "unit_convert", None, from_unit="km", to_unit="mile"
+        )
         assert result.get("success") is False
 
 
@@ -375,14 +451,19 @@ class TestDateCalc:
 
     def test_date_difference(self, calc):
         """Test date difference calculation."""
-        result = calc.calculate("date_calc", None, start="2024-01-01", end="2024-12-31")
+        result = calc.calculate(
+            "date_calc", None, start="2024-01-01", end="2024-12-31"
+        )
         assert result["days_diff"] == 365
         assert round(result["weeks_diff"], 1) == 52.1
 
     def test_age_calculation(self, calc):
         """Test age calculation."""
         result = calc.calculate(
-            "date_calc", None, birth_date="1990-05-15", reference_date="2024-01-01"
+            "date_calc",
+            None,
+            birth_date="1990-05-15",
+            reference_date="2024-01-01",
         )
         assert result["age"] == 33
 
@@ -414,7 +495,9 @@ class TestDescribe:
 
     def test_describe_with_percentiles(self, calc, sample_dataframe):
         """Test describe with custom percentiles."""
-        result = calc.calculate("describe", sample_dataframe, percentiles=[0.1, 0.5, 0.9])
+        result = calc.calculate(
+            "describe", sample_dataframe, percentiles=[0.1, 0.5, 0.9]
+        )
         assert "10%" in result["value"] or "0.1" in str(result["value"].keys())
 
     # 修改 test_describe_metadata
@@ -430,13 +513,17 @@ class TestCorrelation:
 
     def test_correlation_basic(self, calc, correlation_dataframe):
         """Test basic correlation calculation."""
-        result = calc.calculate("correlation", correlation_dataframe, method="pearson")
+        result = calc.calculate(
+            "correlation", correlation_dataframe, method="pearson"
+        )
         assert "correlation_matrix" in result
         assert "x" in result["correlation_matrix"]
 
     def test_correlation_specific_columns(self, calc, correlation_dataframe):
         """Test correlation on specific columns."""
-        result = calc.calculate("correlation", correlation_dataframe, columns=["x", "y"])
+        result = calc.calculate(
+            "correlation", correlation_dataframe, columns=["x", "y"]
+        )
         assert "x" in result["correlation_matrix"]
         assert "y" in result["correlation_matrix"]
 
@@ -453,7 +540,11 @@ class TestPivot:
     def test_pivot_basic(self, calc, sample_data_list):
         """Test basic pivot table."""
         result = calc.calculate(
-            "pivot", sample_data_list, index="product", values="sales", aggfunc="sum"
+            "pivot",
+            sample_data_list,
+            index="product",
+            values="sales",
+            aggfunc="sum",
         )
         assert "pivot_table" in result
         assert result["index"] == "product"
@@ -488,7 +579,9 @@ class TestCache:
 
     def test_clear_cache(self, calc_with_cache, sample_dataframe):
         """Test clearing cache."""
-        calc_with_cache.calculate("statistics", sample_dataframe, columns="value", operations="sum")
+        calc_with_cache.calculate(
+            "statistics", sample_dataframe, columns="value", operations="sum"
+        )
         calc_with_cache.clear_cache()
         stats = calc_with_cache.get_stats()
         assert stats["cache_size"] == 0
@@ -499,21 +592,29 @@ class TestDataFormats:
 
     def test_json_string_input(self, calc, sample_data_json):
         """Test JSON string input."""
-        result = calc.calculate("statistics", sample_data_json, columns="value", operations="sum")
+        result = calc.calculate(
+            "statistics", sample_data_json, columns="value", operations="sum"
+        )
         # 现在应该能正常解析
         assert result["statistics"]["value"]["sum"] == 150
 
     def test_csv_string_input(self, calc, sample_data_csv):
         """Test CSV string input."""
-        result = calc.calculate("statistics", sample_data_csv, columns="value", operations="sum")
+        result = calc.calculate(
+            "statistics", sample_data_csv, columns="value", operations="sum"
+        )
         assert result["statistics"]["value"]["sum"] == 150
 
     def test_list_input(self, calc, sample_data_list):
         """Test list input."""
-        result = calc.calculate("statistics", sample_data_list, columns="sales", operations="sum")
+        result = calc.calculate(
+            "statistics", sample_data_list, columns="sales", operations="sum"
+        )
         assert result["statistics"]["sales"]["sum"] == 1000
 
     def test_single_value_input(self, calc):
         """Test single value input."""
-        result = calc.calculate("statistics", 42, columns="value", operations="sum")
+        result = calc.calculate(
+            "statistics", 42, columns="value", operations="sum"
+        )
         assert result["statistics"]["value"]["sum"] == 42

@@ -1,23 +1,25 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:39
 
 
-import logging
 import hashlib
+import logging
 import re
 from collections import OrderedDict
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional, Union
-import warnings
+from typing import Any, Dict, List, Optional
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-from .exceptions import CalculationError, InvalidParameterError, ToolNotFoundError
 from .config import settings
 from .data_handler import DataHandler
+from .exceptions import (
+    CalculationError,
+    InvalidParameterError,
+    ToolNotFoundError,
+)
 from .parser import parser
 
 logger = logging.getLogger(__name__)
@@ -66,10 +68,13 @@ class EasyCalc:
         # Setup logging
         log_level = self.config.get("log_level", "INFO")
         log_format = self.config.get(
-            "log_format", "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            "log_format",
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         )
 
-        logging.basicConfig(level=getattr(logging, log_level), format=log_format)
+        logging.basicConfig(
+            level=getattr(logging, log_level), format=log_format
+        )
 
         logger.info(f"EasyCalc initialized with {len(self._tools)} tools")
 
@@ -81,7 +86,9 @@ class EasyCalc:
     def calculate(self, tool: str, data: Any, **kwargs) -> Dict:
         """Main calculation entry point."""
         if tool not in self._tools:
-            raise ToolNotFoundError(f"Unknown tool: {tool}. Available: {self.available_tools}")
+            raise ToolNotFoundError(
+                f"Unknown tool: {tool}. Available: {self.available_tools}"
+            )
 
         try:
             # Check cache
@@ -104,7 +111,10 @@ class EasyCalc:
 
             # 确保 result 是字典
             if result is None:
-                result = {"success": False, "error": f"Tool {tool} returned None"}
+                result = {
+                    "success": False,
+                    "error": f"Tool {tool} returned None",
+                }
 
             # 如果结果中没有 success 字段，默认成功
             if "success" not in result:
@@ -116,11 +126,17 @@ class EasyCalc:
                     "tool": tool,
                     "success": True,
                     "timestamp": datetime.now().isoformat(),
-                    "config": {k: v for k, v in self.config.items() if not callable(v)},
+                    "config": {
+                        k: v for k, v in self.config.items() if not callable(v)
+                    },
                 }
 
             # Cache result
-            if self.config["cache_enabled"] and cache_key and result.get("success", True):
+            if (
+                self.config["cache_enabled"]
+                and cache_key
+                and result.get("success", True)
+            ):
                 self._add_to_cache(cache_key, result)
 
             logger.info(f"Successfully executed {tool}")
@@ -128,7 +144,12 @@ class EasyCalc:
 
         except (InvalidParameterError, CalculationError) as e:
             logger.error(f"Error in {tool}: {str(e)}")
-            return {"success": False, "error": str(e), "error_type": type(e).__name__, "tool": tool}
+            return {
+                "success": False,
+                "error": str(e),
+                "error_type": type(e).__name__,
+                "tool": tool,
+            }
         except Exception as e:
             logger.exception(f"Unexpected error in {tool}")
             return {
@@ -145,7 +166,6 @@ class EasyCalc:
 
     def _generate_cache_key(self, tool: str, data: Any, kwargs: Dict) -> str:
         """Generate cache key from tool name, data, and parameters."""
-        import hashlib
 
         data_str = ""
         if data is not None:
@@ -155,11 +175,14 @@ class EasyCalc:
                     # pandas 2.0+ 方式
                     from pandas.util import hash_pandas_object
 
-                    data_str = hashlib.md5(hash_pandas_object(data).values.tobytes()).hexdigest()
+                    data_str = hashlib.md5(
+                        hash_pandas_object(data).values.tobytes()
+                    ).hexdigest()
                 except ImportError:
                     # 降级方案
                     data_str = hashlib.md5(
-                        str(data.shape).encode() + str(data.columns.tolist()).encode()
+                        str(data.shape).encode()
+                        + str(data.columns.tolist()).encode()
                     ).hexdigest()
             else:
                 data_str = str(data)
@@ -211,7 +234,11 @@ class EasyCalc:
             try:
                 # 预检查除零
                 if "/0" in expression.replace(" ", ""):
-                    return {"result": float("inf"), "expression": expression, "type": "float"}
+                    return {
+                        "result": float("inf"),
+                        "expression": expression,
+                        "type": "float",
+                    }
 
                 result = ne.evaluate(expression)
                 if hasattr(result, "item"):
@@ -223,11 +250,19 @@ class EasyCalc:
                     if result.is_integer():
                         result = int(result)
 
-                return {"result": result, "expression": expression, "type": type(result).__name__}
+                return {
+                    "result": result,
+                    "expression": expression,
+                    "type": type(result).__name__,
+                }
             except Exception as e:
                 # 检查是否是除零错误
                 if "division by zero" in str(e):
-                    return {"result": float("inf"), "expression": expression, "type": "float"}
+                    return {
+                        "result": float("inf"),
+                        "expression": expression,
+                        "type": "float",
+                    }
                 # 返回错误信息而不是抛出异常
                 return {
                     "success": False,
@@ -281,7 +316,9 @@ class EasyCalc:
         group_by = kwargs.get("group_by")
 
         # Parse natural language if needed
-        if isinstance(operations, str) and any(c in operations for c in ["和", "平均", "总"]):
+        if isinstance(operations, str) and any(
+            c in operations for c in ["和", "平均", "总"]
+        ):
             parsed = parser.parse_calculation(operations)
             operations = parsed.get("operations", ["mean", "sum"])
             if not group_by and parsed.get("group_by"):
@@ -294,7 +331,9 @@ class EasyCalc:
                 raise InvalidParameterError("No numeric columns found")
         elif isinstance(columns, str):
             columns = (
-                [columns] if columns in df.columns else self._find_similar_columns(df, columns)
+                [columns]
+                if columns in df.columns
+                else self._find_similar_columns(df, columns)
             )
         elif isinstance(columns, list):
             columns = [c for c in columns if c in df.columns]
@@ -309,14 +348,20 @@ class EasyCalc:
         if group_by:
             if isinstance(group_by, str):
                 group_by = [group_by]
-            result = self._grouped_statistics(df, columns, operations, group_by)
+            result = self._grouped_statistics(
+                df, columns, operations, group_by
+            )
         else:
             result = self._overall_statistics(df, columns, operations)
 
-        result["summary"] = self._generate_summary(result, columns, operations, group_by)
+        result["summary"] = self._generate_summary(
+            result, columns, operations, group_by
+        )
         return result
 
-    def _overall_statistics(self, df: pd.DataFrame, columns: List, operations: List) -> Dict:
+    def _overall_statistics(
+        self, df: pd.DataFrame, columns: List, operations: List
+    ) -> Dict:
         """Compute overall statistics."""
         stats = {}
         for col in columns:
@@ -459,13 +504,17 @@ class EasyCalc:
         columns = kwargs.get("columns")
 
         if not condition:
-            raise InvalidParameterError("'condition' is required for filter_calc")
+            raise InvalidParameterError(
+                "'condition' is required for filter_calc"
+            )
 
         # Apply filter
         try:
             filtered_df = df.query(condition)
         except Exception as e:
-            raise InvalidParameterError(f"Invalid filter condition: {condition}, error: {str(e)}")
+            raise InvalidParameterError(
+                f"Invalid filter condition: {condition}, error: {str(e)}"
+            )
 
         result = {
             "filtered_count": len(filtered_df),
@@ -478,13 +527,17 @@ class EasyCalc:
         if calculate or columns:
             if calculate and isinstance(calculate, str):
                 parsed = parser.parse_calculation(calculate)
-                columns = parsed.get("columns") or (columns if columns else "all")
+                columns = parsed.get("columns") or (
+                    columns if columns else "all"
+                )
                 operations = parsed.get("operations") or ["sum"]
             else:
                 operations = kwargs.get("operations", ["sum"])
 
             # Get statistics
-            stats_result = self._statistics(filtered_df, columns=columns, operations=operations)
+            stats_result = self._statistics(
+                filtered_df, columns=columns, operations=operations
+            )
             result["statistics"] = stats_result.get("statistics", stats_result)
 
         return result
@@ -518,37 +571,49 @@ class EasyCalc:
         df[date_col] = pd.to_datetime(df[date_col])
         df = df.sort_values(date_col)
 
-        result = {"operation": operation, "date_col": date_col, "value_col": value_col}
+        result = {
+            "operation": operation,
+            "date_col": date_col,
+            "value_col": value_col,
+        }
 
         if operation == "moving_average":
             window = kwargs.get("window", 3)
             df["moving_avg"] = df[value_col].rolling(window=window).mean()
             result["result"] = (
-                df[[date_col, value_col, "moving_avg"]].dropna().to_dict(orient="records")
+                df[[date_col, value_col, "moving_avg"]]
+                .dropna()
+                .to_dict(orient="records")
             )
             result["window"] = window
 
         elif operation == "growth_rate":
             df["growth_rate"] = df[value_col].pct_change() * 100
-            result["result"] = df[[date_col, value_col, "growth_rate"]].to_dict(orient="records")
+            result["result"] = df[
+                [date_col, value_col, "growth_rate"]
+            ].to_dict(orient="records")
             result["average_growth"] = float(df["growth_rate"].mean())
 
         elif operation == "cumulative":
             df["cumulative"] = df[value_col].cumsum()
-            result["result"] = df[[date_col, value_col, "cumulative"]].to_dict(orient="records")
+            result["result"] = df[[date_col, value_col, "cumulative"]].to_dict(
+                orient="records"
+            )
             result["total"] = float(df["cumulative"].iloc[-1])
 
         elif operation == "yoy":
             df["year"] = df[date_col].dt.year
             df["month"] = df[date_col].dt.month
             df["yoy"] = df.groupby("month")[value_col].pct_change() * 100
-            result["result"] = df.dropna(subset=["yoy"])[[date_col, value_col, "yoy"]].to_dict(
-                orient="records"
-            )
+            result["result"] = df.dropna(subset=["yoy"])[
+                [date_col, value_col, "yoy"]
+            ].to_dict(orient="records")
 
         elif operation == "mom":
             df["mom"] = df[value_col].pct_change() * 100
-            result["result"] = df[[date_col, value_col, "mom"]].to_dict(orient="records")
+            result["result"] = df[[date_col, value_col, "mom"]].to_dict(
+                orient="records"
+            )
 
         else:
             raise InvalidParameterError(
@@ -558,7 +623,9 @@ class EasyCalc:
 
         return result
 
-    def _unit_convert(self, df: Optional[pd.DataFrame] = None, **kwargs) -> Dict:
+    def _unit_convert(
+        self, df: Optional[pd.DataFrame] = None, **kwargs
+    ) -> Dict:
         """Unit conversion for length, weight, and temperature."""
         value = kwargs.get("value")
         from_unit = kwargs.get("from_unit", "").lower()
@@ -693,7 +760,9 @@ class EasyCalc:
         if date and days:
             date_obj = pd.to_datetime(date)
             new_date = date_obj + timedelta(days=days)
-            result["new_date"] = new_date.strftime(self.config["default_date_format"])
+            result["new_date"] = new_date.strftime(
+                self.config["default_date_format"]
+            )
 
         # Age calculation
         birth_date = kwargs.get("birth_date")
@@ -704,7 +773,11 @@ class EasyCalc:
                 today = pd.to_datetime(today)
             else:
                 today = pd.Timestamp.now()
-            age = today.year - birth.year - ((today.month, today.day) < (birth.month, birth.day))
+            age = (
+                today.year
+                - birth.year
+                - ((today.month, today.day) < (birth.month, birth.day))
+            )
             result["age"] = age
 
         # Day of week
@@ -788,7 +861,9 @@ class EasyCalc:
 
     # ========== Helper Methods ==========
 
-    def _find_similar_columns(self, df: pd.DataFrame, keyword: str) -> List[str]:
+    def _find_similar_columns(
+        self, df: pd.DataFrame, keyword: str
+    ) -> List[str]:
         """Find columns similar to keyword."""
         keyword_lower = keyword.lower()
         matches = [col for col in df.columns if keyword_lower in col.lower()]

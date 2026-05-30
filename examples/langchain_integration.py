@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/30
 """
@@ -7,8 +6,8 @@ LangChain integration example - Agent Mode.
 Demonstrates how to use easy-calc-tool with LangChain Agent.
 """
 
-import sys
 import os
+import sys
 
 # 将项目根目录添加到 Python 路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -53,8 +52,12 @@ def create_agent_with_tools(api_key=None, api_base=None, model=None):
     mdl = model or OPENAI_MODEL
 
     if key == "your-api-key-here":
-        print("⚠️  Warning: Please set your OpenAI API key in the OPENAI_API_KEY variable")
-        print("   Open the file and replace 'your-api-key-here' with your actual API key")
+        print(
+            "⚠️  Warning: Please set your OpenAI API key in the OPENAI_API_KEY variable"
+        )
+        print(
+            "   Open the file and replace 'your-api-key-here' with your actual API key"
+        )
         return None, None
 
     # Initialize calculator
@@ -102,8 +105,14 @@ def run_demo():
     examples = [
         ("Basic Arithmetic", "Calculate 12345 * 67890"),
         ("Unit Conversion", "Convert 100 kilometers to miles"),
-        ("Date Calculation", "How many days between 2024-01-01 and 2024-12-31?"),
-        ("Statistics", "Analyze this sales data: [100, 200, 150, 300], calculate sum and average"),
+        (
+            "Date Calculation",
+            "How many days between 2024-01-01 and 2024-12-31?",
+        ),
+        (
+            "Statistics",
+            "Analyze this sales data: [100, 200, 150, 300], calculate sum and average",
+        ),
     ]
 
     for title, question in examples:
@@ -111,7 +120,9 @@ def run_demo():
         print("-" * 40)
         print(f"🧑 User: {question}")
 
-        response = agent.invoke({"messages": [{"role": "user", "content": question}]})
+        response = agent.invoke(
+            {"messages": [{"role": "user", "content": question}]}
+        )
         print(f"🤖 Agent: {response['messages'][-1].content}")
 
 
@@ -143,7 +154,9 @@ def run_interactive():
         messages.append({"role": "user", "content": user_input})
         response = agent.invoke({"messages": messages})
         assistant_message = response["messages"][-1]
-        messages.append({"role": "assistant", "content": assistant_message.content})
+        messages.append(
+            {"role": "assistant", "content": assistant_message.content}
+        )
 
         print(f"🤖 Agent: {assistant_message.content}")
 
@@ -167,7 +180,9 @@ def run_test():
     stats_tool = next((t for t in tools if t.name == "statistics"), None)
     if stats_tool:
         data = '[{"sales":100},{"sales":200},{"sales":300}]'
-        result = stats_tool.invoke({"data": data, "columns": "sales", "operations": "sum,mean"})
+        result = stats_tool.invoke(
+            {"data": data, "columns": "sales", "operations": "sum,mean"}
+        )
         print(f"\n📊 Statistics Result:\n{result}")
 
     print("\n" + "-" * 40)
@@ -181,7 +196,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="LangChain Integration Demo")
     parser.add_argument(
-        "--mode", choices=["demo", "interactive", "test"], default=RUN_MODE, help="Run mode"
+        "--mode",
+        choices=["demo", "interactive", "test"],
+        default=RUN_MODE,
+        help="Run mode",
     )
     parser.add_argument("--api-key", help="OpenAI API key")
     parser.add_argument("--api-base", help="OpenAI API base URL")

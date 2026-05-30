@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:46
 """
 Basic usage examples for easy-calc-tool.
 """
-import sys
 import os
+import sys
 
 # 将项目根目录添加到 Python 路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -27,7 +26,9 @@ def basic_arithmetic():
     print(f"10 ** 3 = {result['result']}")
 
     # Complex expression
-    result = calc.calculate("arithmetic", None, expression="sqrt(16) + sin(30)")
+    result = calc.calculate(
+        "arithmetic", None, expression="sqrt(16) + sin(30)"
+    )
     print(f"sqrt(16) + sin(30) = {result['result']}")
 
 
@@ -46,14 +47,21 @@ def statistical_analysis():
 
     # Overall statistics
     result = calc.calculate(
-        "statistics", data, columns=["revenue", "profit"], operations=["sum", "mean", "std"]
+        "statistics",
+        data,
+        columns=["revenue", "profit"],
+        operations=["sum", "mean", "std"],
     )
     print("\nOverall Statistics:")
     print(result["statistics"])
 
     # Grouped statistics
     result = calc.calculate(
-        "statistics", data, columns="revenue", operations=["sum", "mean"], group_by="department"
+        "statistics",
+        data,
+        columns="revenue",
+        operations=["sum", "mean"],
+        group_by="department",
     )
     print("\nGrouped Statistics:")
     for dept, stats in result["grouped"].items():
@@ -85,10 +93,17 @@ def time_series_analysis():
     import pandas as pd
 
     dates = pd.date_range("2024-01-01", periods=30, freq="D")
-    data = pd.DataFrame({"date": dates, "sales": [100 + i * 2 + (i % 7) * 5 for i in range(30)]})
+    data = pd.DataFrame(
+        {
+            "date": dates,
+            "sales": [100 + i * 2 + (i % 7) * 5 for i in range(30)],
+        }
+    )
 
     # Moving average
-    result = calc.calculate("timeseries", data, operation="moving_average", window=7)
+    result = calc.calculate(
+        "timeseries", data, operation="moving_average", window=7
+    )
     print("\nMoving Average (7-day):")
     print(f"Calculated for {len(result['result'])} days")
 
@@ -111,15 +126,23 @@ def unit_conversion():
     print("\nUnit Conversions:")
     for value, from_unit, to_unit in conversions:
         result = calc.calculate(
-            "unit_convert", None, value=value, from_unit=from_unit, to_unit=to_unit
+            "unit_convert",
+            None,
+            value=value,
+            from_unit=from_unit,
+            to_unit=to_unit,
         )
 
         # 安全地获取结果
         if isinstance(result, dict):
             if result.get("success") is False:
-                print(f"  ✗ {value} {from_unit} to {to_unit}: {result.get('error')}")
+                print(
+                    f"  ✗ {value} {from_unit} to {to_unit}: {result.get('error')}"
+                )
             elif "result" in result:
-                print(f"  ✓ {value} {from_unit} = {result['result']:.2f} {to_unit}")
+                print(
+                    f"  ✓ {value} {from_unit} = {result['result']:.2f} {to_unit}"
+                )
             elif "conversion" in result:
                 print(f"  ✓ {result['conversion']}")
             else:
@@ -133,11 +156,15 @@ def date_calculations():
     calc = EasyCalc()
 
     # Date difference
-    result = calc.calculate("date_calc", None, start="2024-01-01", end="2024-12-31")
+    result = calc.calculate(
+        "date_calc", None, start="2024-01-01", end="2024-12-31"
+    )
     print(f"\nDays in 2024: {result['days_diff']}")
 
     # Age calculation
-    result = calc.calculate("date_calc", None, birth_date="1990-05-15", reference_date="2024-01-01")
+    result = calc.calculate(
+        "date_calc", None, birth_date="1990-05-15", reference_date="2024-01-01"
+    )
     print(f"Age: {result['age']} years")
 
     # Day of week

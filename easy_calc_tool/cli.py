@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 18:38
 
@@ -10,7 +9,6 @@ Command-line interface for easy-calc-tool.
 import argparse
 import json
 import sys
-from typing import Dict, Any
 
 from .core import EasyCalc
 from .version import __version__
@@ -21,7 +19,9 @@ def main():
     parser = argparse.ArgumentParser(
         description="Easy Calc Tool - Flexible calculation toolbox for LLMs"
     )
-    parser.add_argument("--version", action="version", version=f"easy-calc-tool {__version__}")
+    parser.add_argument(
+        "--version", action="version", version=f"easy-calc-tool {__version__}"
+    )
 
     subparsers = parser.add_subparsers(dest="command", help="Commands")
 
@@ -41,7 +41,9 @@ def main():
         ],
         help="Tool to use",
     )
-    calc_parser.add_argument("--data", help="Input data (file path or JSON string)")
+    calc_parser.add_argument(
+        "--data", help="Input data (file path or JSON string)"
+    )
     calc_parser.add_argument("--params", help="JSON string of parameters")
 
     # Tools list command
@@ -52,7 +54,9 @@ def main():
 
     # Cache command
     cache_parser = subparsers.add_parser("cache", help="Manage cache")
-    cache_parser.add_argument("action", choices=["clear", "stats"], help="Cache action")
+    cache_parser.add_argument(
+        "action", choices=["clear", "stats"], help="Cache action"
+    )
 
     args = parser.parse_args()
 
@@ -121,7 +125,9 @@ def _manage_cache(action: str):
         print("Cache cleared")
     elif action == "stats":
         # 使用公共方法而不是直接访问私有属性
-        print(f"Cache size: {calc.get_cache_size()} / {calc.config['cache_max_size']}")
+        print(
+            f"Cache size: {calc.get_cache_size()} / {calc.config['cache_max_size']}"
+        )
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 18:37
 
@@ -10,22 +9,25 @@ Provides adapters to wrap EasyCalc tools as LangChain-compatible tools.
 This module is optional and only needed when using LangChain framework.
 """
 
-from typing import List, Optional, Dict, Any  # 添加 Any
+from typing import Any, Dict, List, Optional  # 添加 Any
+
 from langchain_core.tools import StructuredTool
 from pydantic import BaseModel, Field
 
 from .core import EasyCalc
-from .tools import get_tools
-
 
 # ========== Pydantic Models for Parameter Validation ==========
 
 
 class ArithmeticInput(BaseModel):
-    expression: Optional[str] = Field(None, description="数学表达式，如 '2+3*4'")
+    expression: Optional[str] = Field(
+        None, description="数学表达式，如 '2+3*4'"
+    )
     a: Optional[float] = Field(None, description="二元运算第一个数")
     b: Optional[float] = Field(None, description="二元运算第二个数")
-    operation: Optional[str] = Field(None, description="操作符: +, -, *, /, **, %")
+    operation: Optional[str] = Field(
+        None, description="操作符: +, -, *, /, **, %"
+    )
 
 
 class StatisticsInput(BaseModel):
@@ -96,7 +98,6 @@ class PivotInput(BaseModel):
 
 def _call_calc(calc: EasyCalc, tool: str, data: Any, **kwargs) -> str:
     """Helper to call calc and format result."""
-    import json
 
     result = calc.calculate(tool, data, **kwargs)
 
@@ -122,10 +123,14 @@ def _format_result(result: Dict) -> str:
         return json.dumps(result["statistics"], ensure_ascii=False, indent=2)
 
     if "grouped_result" in result:
-        return json.dumps(result["grouped_result"], ensure_ascii=False, indent=2)
+        return json.dumps(
+            result["grouped_result"], ensure_ascii=False, indent=2
+        )
 
     if "correlation_matrix" in result:
-        return json.dumps(result["correlation_matrix"], ensure_ascii=False, indent=2)
+        return json.dumps(
+            result["correlation_matrix"], ensure_ascii=False, indent=2
+        )
 
     return json.dumps(result, ensure_ascii=False, indent=2)
 
@@ -140,14 +145,26 @@ def _parse_list(value: Optional[str]) -> Optional[List[str]]:
 
 
 # 定义包装函数（避免 lambda 的潜在问题）
-def _arithmetic_wrapper(calc: EasyCalc, expression=None, a=None, b=None, operation=None):
+def _arithmetic_wrapper(
+    calc: EasyCalc, expression=None, a=None, b=None, operation=None
+):
     return _call_calc(
-        calc, "arithmetic", None, expression=expression, a=a, b=b, operation=operation
+        calc,
+        "arithmetic",
+        None,
+        expression=expression,
+        a=a,
+        b=b,
+        operation=operation,
     )
 
 
 def _statistics_wrapper(
-    calc: EasyCalc, data: str, columns=None, operations="mean,sum", group_by=None
+    calc: EasyCalc,
+    data: str,
+    columns=None,
+    operations="mean,sum",
+    group_by=None,
 ):
     return _call_calc(
         calc,
@@ -160,7 +177,12 @@ def _statistics_wrapper(
 
 
 def _aggregate_wrapper(
-    calc: EasyCalc, data: str, what=None, columns=None, operations=None, group_by=None
+    calc: EasyCalc,
+    data: str,
+    what=None,
+    columns=None,
+    operations=None,
+    group_by=None,
 ):
     return _call_calc(
         calc,
@@ -174,7 +196,12 @@ def _aggregate_wrapper(
 
 
 def _filter_calc_wrapper(
-    calc: EasyCalc, data: str, condition: str, calculate=None, columns=None, operations=None
+    calc: EasyCalc,
+    data: str,
+    condition: str,
+    calculate=None,
+    columns=None,
+    operations=None,
 ):
     return _call_calc(
         calc,
@@ -188,7 +215,12 @@ def _filter_calc_wrapper(
 
 
 def _timeseries_wrapper(
-    calc: EasyCalc, data: str, operation: str, date_col=None, value_col=None, window=3
+    calc: EasyCalc,
+    data: str,
+    operation: str,
+    date_col=None,
+    value_col=None,
+    window=3,
 ):
     return _call_calc(
         calc,
@@ -201,8 +233,17 @@ def _timeseries_wrapper(
     )
 
 
-def _unit_convert_wrapper(calc: EasyCalc, value: float, from_unit: str, to_unit: str):
-    return _call_calc(calc, "unit_convert", None, value=value, from_unit=from_unit, to_unit=to_unit)
+def _unit_convert_wrapper(
+    calc: EasyCalc, value: float, from_unit: str, to_unit: str
+):
+    return _call_calc(
+        calc,
+        "unit_convert",
+        None,
+        value=value,
+        from_unit=from_unit,
+        to_unit=to_unit,
+    )
 
 
 def _date_calc_wrapper(
@@ -229,7 +270,9 @@ def _date_calc_wrapper(
     )
 
 
-def _describe_wrapper(calc: EasyCalc, data: str, percentiles="0.25,0.5,0.75", include="all"):
+def _describe_wrapper(
+    calc: EasyCalc, data: str, percentiles="0.25,0.5,0.75", include="all"
+):
     return _call_calc(
         calc,
         "describe",
@@ -239,12 +282,22 @@ def _describe_wrapper(calc: EasyCalc, data: str, percentiles="0.25,0.5,0.75", in
     )
 
 
-def _correlation_wrapper(calc: EasyCalc, data: str, method="pearson", columns=None):
-    return _call_calc(calc, "correlation", data, method=method, columns=_parse_list(columns))
+def _correlation_wrapper(
+    calc: EasyCalc, data: str, method="pearson", columns=None
+):
+    return _call_calc(
+        calc, "correlation", data, method=method, columns=_parse_list(columns)
+    )
 
 
 def _pivot_wrapper(
-    calc: EasyCalc, data: str, index: str, values: str, columns=None, aggfunc="mean", fill_value=0
+    calc: EasyCalc,
+    data: str,
+    index: str,
+    values: str,
+    columns=None,
+    aggfunc="mean",
+    fill_value=0,
 ):
     return _call_calc(
         calc,
@@ -258,7 +311,9 @@ def _pivot_wrapper(
     )
 
 
-def create_langchain_tools(calc: Optional[EasyCalc] = None) -> List[StructuredTool]:
+def create_langchain_tools(
+    calc: Optional[EasyCalc] = None,
+) -> List[StructuredTool]:
     """
     Create LangChain tools from the EasyCalc instance.
 
@@ -349,7 +404,14 @@ def create_langchain_tools(calc: Optional[EasyCalc] = None) -> List[StructuredTo
     tools.append(
         StructuredTool.from_function(
             func=lambda start=None, end=None, date=None, days=None, birth_date=None, date_for_dow=None, reference_date=None: _date_calc_wrapper(
-                calc, start, end, date, days, birth_date, date_for_dow, reference_date
+                calc,
+                start,
+                end,
+                date,
+                days,
+                birth_date,
+                date_for_dow,
+                reference_date,
             ),
             name="date_calc",
             description="日期计算：日期差、日期加减、年龄、星期几。",
@@ -396,6 +458,8 @@ def create_langchain_tools(calc: Optional[EasyCalc] = None) -> List[StructuredTo
     return tools
 
 
-def get_langchain_tools(calc: Optional[EasyCalc] = None) -> List[StructuredTool]:
+def get_langchain_tools(
+    calc: Optional[EasyCalc] = None,
+) -> List[StructuredTool]:
     """Get all LangChain tools (alias for create_langchain_tools)."""
     return create_langchain_tools(calc)

@@ -1,17 +1,15 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 # @Author : jiaojiao
 # @Time : 2026/5/29 17:43
 
 """
 Tests for natural language parser.
 """
-import sys
 import os
+import sys
 
 # 将项目根目录添加到 Python 路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import pytest
 from easy_calc_tool.parser import NaturalLanguageParser
 
 
@@ -55,7 +53,9 @@ class TestNaturalLanguageParser:
 
     def test_parse_calculation_with_groupby_english(self):
         """Test parsing group by in English."""
-        result = self.parser.parse_calculation("group by department average salary")
+        result = self.parser.parse_calculation(
+            "group by department average salary"
+        )
         assert result["group_by"] == ["department"]
 
     def test_parse_calculation_with_each_pattern(self):
@@ -80,7 +80,9 @@ class TestNaturalLanguageParser:
 
     def test_parse_calculation_with_filter(self):
         """Test filter extraction."""
-        result = self.parser.parse_calculation("销售额大于1000的数据 where sales > 1000")
+        result = self.parser.parse_calculation(
+            "销售额大于1000的数据 where sales > 1000"
+        )
         assert result["filters"] is not None
 
     def test_parse_expression_safe(self):
