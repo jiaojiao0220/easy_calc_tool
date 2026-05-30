@@ -64,10 +64,7 @@ class DataHandler:
             return True
 
         # 包含路径分隔符
-        if any(c in data for c in "/\\"):
-            return True
-
-        return False
+        return bool(any(c in data for c in "/\\"))
 
     def _parse_string(self, data: str) -> pd.DataFrame:
         """Parse string data (CSV or JSON)."""

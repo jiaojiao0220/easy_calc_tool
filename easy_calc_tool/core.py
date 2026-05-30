@@ -159,6 +159,7 @@ class EasyCalc:
                 "tool": tool,
             }
 
+    @staticmethod
     def execute_tool(tool_name: str, arguments: dict) -> dict:
         """Execute a tool call (convenience function)."""
         calc = EasyCalc()
@@ -411,7 +412,7 @@ class EasyCalc:
         for name, group in grouped:
             # 将元组转换为字符串
             if isinstance(name, tuple):
-                group_name = "_".join(str(x) for x in name)
+                group_name = "_".join(str(x) for x in name) if isinstance(name, tuple) else str(name)
             else:
                 group_name = str(name)
 
@@ -514,7 +515,7 @@ class EasyCalc:
         except Exception as e:
             raise InvalidParameterError(
                 f"Invalid filter condition: {condition}, error: {str(e)}"
-            )
+            )from e
 
         result = {
             "filtered_count": len(filtered_df),
@@ -769,10 +770,7 @@ class EasyCalc:
         if birth_date:
             birth = pd.to_datetime(birth_date)
             today = kwargs.get("reference_date")
-            if today:
-                today = pd.to_datetime(today)
-            else:
-                today = pd.Timestamp.now()
+            today = pd.to_datetime(today) if today else pd.Timestamp.now()
             age = (
                 today.year
                 - birth.year
