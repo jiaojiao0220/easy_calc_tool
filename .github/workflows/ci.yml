@@ -41,7 +41,7 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          flake8 easy_calc_tool tests --count --statistics --ignore=E501,F401,E402,E722,F841,F811,W191
+          flake8 easy_calc_tool tests --count --statistics --ignore=E501,F401,E402,E722,F841,F811,W191,W503
 
       - name: Lint with ruff
         run: |
