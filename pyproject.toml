@@ -4,9 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "easy-calc-tool"
-dynamic = ["version"]
-[project]
-name = "easy-calc-tool"
 version = "0.1.4"  # 写死版本号
 description = "A flexible calculation toolbox designed for LLM Function Calling"
 readme = "README.md"
